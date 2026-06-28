@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "Локаль челтәргә рөхсәт",
           "dnsOverwrite": "DNS Overwrite",
+          "tunSystemDns": "System DNS",
+          "invalidTunSystemDns": "Enter a valid IPv4 address",
           "ipv6": "IPv6",
           "unifiedDelay": "Бердәм задержка",
           "logLevel": "Лог дәрәҗәсе",

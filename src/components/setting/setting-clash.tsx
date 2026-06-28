@@ -5,6 +5,7 @@ import { useLockFn } from 'ahooks'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { updateGeo, type LogLevel } from 'tauri-plugin-mihomo-api'
+import validator from 'validator'
 
 import { DialogRef, Switch, TooltipIcon } from '@/components/base'
 import { useClash } from '@/hooks/use-clash'
@@ -26,6 +27,7 @@ import { TunnelsViewer } from './mods/tunnels-viewer'
 import { WebUIViewer } from './mods/web-ui-viewer'
 
 const isWIN = getSystem() === 'windows'
+const isMAC = getSystem() === 'macos'
 
 interface Props {
   onError: (err: Error) => void
@@ -51,6 +53,9 @@ const SettingClash = ({ onError }: Props) => {
   const [dnsSettingsEnabled, setDnsSettingsEnabled] = useState(() => {
     return verge?.enable_dns_settings ?? false
   })
+  const [tunSystemDns, setTunSystemDns] = useState(
+    () => verge?.tun_system_dns ?? '8.8.8.8',
+  )
 
   const webRef = useRef<DialogRef>(null)
   const portRef = useRef<DialogRef>(null)
@@ -88,6 +93,25 @@ const SettingClash = ({ onError }: Props) => {
       showNotice.error(err)
       await patchVerge({ enable_dns_settings: !enable }).catch(() => {})
       throw err
+    }
+  })
+
+  const commitTunSystemDns = useLockFn(async () => {
+    const value = tunSystemDns.trim()
+    if (!validator.isIP(value, 4)) {
+      setTunSystemDns(verge?.tun_system_dns ?? '8.8.8.8')
+      showNotice.error(
+        new Error(t('settings.sections.clash.form.fields.invalidTunSystemDns')),
+      )
+      return
+    }
+
+    try {
+      await patchVerge({ tun_system_dns: value })
+      setTunSystemDns(value)
+    } catch (err: any) {
+      setTunSystemDns(verge?.tun_system_dns ?? '8.8.8.8')
+      showNotice.error(err)
     }
   })
 
@@ -141,6 +165,25 @@ const SettingClash = ({ onError }: Props) => {
           onChange={(_, checked) => handleDnsToggle(checked)}
         />
       </SettingItem>
+
+      {isMAC && (
+        <SettingItem
+          label={t('settings.sections.clash.form.fields.tunSystemDns')}
+        >
+          <TextField
+            size="small"
+            value={tunSystemDns}
+            sx={{ width: 140, input: { py: '7.5px' } }}
+            onChange={(event) => setTunSystemDns(event.target.value)}
+            onBlur={commitTunSystemDns}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.currentTarget.blur()
+              }
+            }}
+          />
+        </SettingItem>
+      )}
 
       <SettingItem label={t('settings.sections.clash.form.fields.ipv6')}>
         <GuardState

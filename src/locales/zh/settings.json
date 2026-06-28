@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "局域网连接",
           "dnsOverwrite": "DNS 覆写",
+          "tunSystemDns": "系统 DNS",
+          "invalidTunSystemDns": "请输入有效的 IPv4 地址",
           "ipv6": "IPv6",
           "unifiedDelay": "统一延迟",
           "logLevel": "日志等级",

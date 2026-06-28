@@ -361,6 +361,8 @@ export const translationKeys = [
   'settings.sections.clash.title',
   'settings.sections.clash.form.fields.allowLan',
   'settings.sections.clash.form.fields.dnsOverwrite',
+  'settings.sections.clash.form.fields.tunSystemDns',
+  'settings.sections.clash.form.fields.invalidTunSystemDns',
   'settings.sections.clash.form.fields.ipv6',
   'settings.sections.clash.form.fields.unifiedDelay',
   'settings.sections.clash.form.fields.logLevel',

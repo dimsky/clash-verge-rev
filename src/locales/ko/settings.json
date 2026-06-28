@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "LAN 허용",
           "dnsOverwrite": "DNS 덮어쓰기",
+          "tunSystemDns": "System DNS",
+          "invalidTunSystemDns": "Enter a valid IPv4 address",
           "ipv6": "IPv6",
           "unifiedDelay": "지연 통합",
           "logLevel": "로그 레벨",

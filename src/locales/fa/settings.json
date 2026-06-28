@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "اجازه LAN",
           "dnsOverwrite": "بازنویسی DNS",
+          "tunSystemDns": "System DNS",
+          "invalidTunSystemDns": "Enter a valid IPv4 address",
           "ipv6": "IPv6",
           "unifiedDelay": "معادلDELAY",
           "logLevel": "سطح لاگ",

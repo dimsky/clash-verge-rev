@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "區域網路連線",
           "dnsOverwrite": "DNS 覆寫",
+          "tunSystemDns": "系統 DNS",
+          "invalidTunSystemDns": "請輸入有效的 IPv4 位址",
           "ipv6": "IPv6",
           "unifiedDelay": "統一延遲",
           "logLevel": "日誌等級",

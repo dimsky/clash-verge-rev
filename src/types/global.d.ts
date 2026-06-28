@@ -932,6 +932,7 @@ interface IVergeConfig {
   enable_system_proxy?: boolean
   enable_global_hotkey?: boolean
   enable_dns_settings?: boolean
+  tun_system_dns?: string
   proxy_auto_config?: boolean
   pac_file_content?: string
   proxy_host?: string

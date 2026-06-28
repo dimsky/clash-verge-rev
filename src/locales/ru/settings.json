@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "Разрешить доступ из локальной сети",
           "dnsOverwrite": "Переопределение настроек DNS",
+          "tunSystemDns": "System DNS",
+          "invalidTunSystemDns": "Enter a valid IPv4 address",
           "ipv6": "IPv6",
           "unifiedDelay": "Точная задержка",
           "logLevel": "Уровень логов",

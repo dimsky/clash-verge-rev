@@ -95,6 +95,8 @@
         "fields": {
           "allowLan": "Netzwerkverbindung im lokalen Netzwerk zulassen",
           "dnsOverwrite": "DNS-Überschreibung",
+          "tunSystemDns": "System DNS",
+          "invalidTunSystemDns": "Enter a valid IPv4 address",
           "ipv6": "IPv6",
           "unifiedDelay": "Einheitliche Latenz",
           "logLevel": "Protokolliergrad",

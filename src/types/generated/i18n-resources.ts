@@ -1083,6 +1083,7 @@ export interface TranslationResources {
               clashCore: string
               dnsOverwrite: string
               external: string
+              invalidTunSystemDns: string
               ipv6: string
               logLevel: string
               openUwpTool: string
@@ -1111,6 +1112,7 @@ export interface TranslationResources {
                 targetPort: string
                 title: string
               }
+              tunSystemDns: string
               unifiedDelay: string
               updateGeoData: string
               webUI: string
