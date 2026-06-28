@@ -33,6 +33,7 @@ struct ConfigValues {
     socks_enabled: bool,
     http_enabled: bool,
     enable_dns_settings: bool,
+    tun_system_dns: std::string::String,
     #[cfg(not(target_os = "windows"))]
     redir_enabled: bool,
     #[cfg(target_os = "linux")]
@@ -105,6 +106,7 @@ async fn get_config_values() -> ConfigValues {
         ref verge_socks_enabled,
         ref verge_http_enabled,
         ref enable_dns_settings,
+        ref tun_system_dns,
         ..
     } = **verge_arc;
 
@@ -123,6 +125,8 @@ async fn get_config_values() -> ConfigValues {
     #[cfg(target_os = "linux")]
     let tproxy_enabled = verge_arc.verge_tproxy_enabled.unwrap_or(false);
 
+    let tun_system_dns = tun::resolve_tun_system_dns(tun_system_dns.as_deref());
+
     drop(verge_arc);
     drop(verge);
 
@@ -134,6 +138,7 @@ async fn get_config_values() -> ConfigValues {
         socks_enabled,
         http_enabled,
         enable_dns_settings,
+        tun_system_dns,
         #[cfg(not(target_os = "windows"))]
         redir_enabled,
         #[cfg(target_os = "linux")]
@@ -619,6 +624,7 @@ pub async fn enhance() -> Result<(Mapping, HashSet<String>, HashMap<String, Resu
         socks_enabled,
         http_enabled,
         enable_dns_settings,
+        tun_system_dns,
         #[cfg(not(target_os = "windows"))]
         redir_enabled,
         #[cfg(target_os = "linux")]
@@ -673,7 +679,7 @@ pub async fn enhance() -> Result<(Mapping, HashSet<String>, HashMap<String, Resu
 
     config = cleanup_proxy_groups(config);
 
-    config = use_tun(config, enable_tun);
+    config = use_tun(config, enable_tun, tun_system_dns);
     config = use_sort(config);
 
     // dns settings

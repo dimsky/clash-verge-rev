@@ -30,7 +30,7 @@ macro_rules! append {
     };
 }
 
-pub fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
+pub fn use_tun(mut config: Mapping, enable: bool, tun_system_dns: String) -> Mapping {
     let tun_key = Value::from("tun");
     let tun_val = config.get(&tun_key);
     let mut tun_val = tun_val.map_or_else(Mapping::new, |val| {
@@ -75,7 +75,7 @@ pub fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
             {
                 AsyncHandler::spawn(move || async move {
                     crate::utils::resolve::dns::restore_public_dns().await;
-                    crate::utils::resolve::dns::set_public_dns("114.114.114.114".to_string()).await;
+                    crate::utils::resolve::dns::set_public_dns(tun_system_dns).await;
                 });
             }
         }

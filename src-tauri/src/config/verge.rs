@@ -103,6 +103,9 @@ pub struct IVerge {
     /// enable dns settings - this controls whether dns_config.yaml is applied
     pub enable_dns_settings: Option<bool>,
 
+    /// IPv4 address written to macOS system DNS while TUN DNS overwrite is active
+    pub tun_system_dns: Option<String>,
+
     /// always use default bypass
     pub use_default_bypass: Option<bool>,
 
@@ -447,6 +450,7 @@ impl IVerge {
             enable_auto_light_weight_mode: Some(false),
             auto_light_weight_minutes: Some(10),
             enable_dns_settings: Some(false),
+            tun_system_dns: Some("8.8.8.8".into()),
             home_cards: None,
             enable_external_controller: Some(false),
             ..Self::default()
@@ -552,6 +556,7 @@ impl IVerge {
         patch!(enable_auto_light_weight_mode);
         patch!(auto_light_weight_minutes);
         patch!(enable_dns_settings);
+        patch!(tun_system_dns);
         patch!(home_cards);
         patch!(enable_external_controller);
     }
@@ -575,5 +580,15 @@ impl IVerge {
         } else {
             LevelFilter::Info
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::IVerge;
+
+    #[test]
+    fn default_tun_system_dns_is_google_dns() {
+        assert_eq!(IVerge::template().tun_system_dns.as_deref(), Some("8.8.8.8"));
     }
 }
