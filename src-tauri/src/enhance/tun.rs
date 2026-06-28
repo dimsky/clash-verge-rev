@@ -3,6 +3,15 @@ use serde_yaml_ng::{Mapping, Value};
 #[cfg(target_os = "macos")]
 use crate::process::AsyncHandler;
 
+const DEFAULT_TUN_SYSTEM_DNS: &str = "8.8.8.8";
+
+pub(crate) fn resolve_tun_system_dns(value: Option<&str>) -> String {
+    value
+        .and_then(|value| value.parse::<std::net::Ipv4Addr>().ok())
+        .map(|value| value.to_string())
+        .unwrap_or_else(|| DEFAULT_TUN_SYSTEM_DNS.to_string())
+}
+
 macro_rules! revise {
     ($map: expr, $key: expr, $val: expr) => {
         let ret_key = Value::String($key.into());
@@ -86,4 +95,33 @@ pub fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
     revise!(config, "tun", tun_val);
 
     config
+}
+
+#[cfg(test)]
+mod tests {
+    use super::resolve_tun_system_dns;
+
+    #[test]
+    fn defaults_missing_tun_system_dns_to_google_dns() {
+        assert_eq!(resolve_tun_system_dns(None), "8.8.8.8");
+    }
+
+    #[test]
+    fn preserves_valid_custom_ipv4_tun_system_dns() {
+        assert_eq!(resolve_tun_system_dns(Some("1.1.1.1")), "1.1.1.1");
+    }
+
+    #[test]
+    fn rejects_invalid_tun_system_dns_values() {
+        for value in [
+            "",
+            "not-an-ip",
+            "2001:4860:4860::8888",
+            "8.8.8.8/32",
+            "8.8.8.8:53",
+            "8.8.8.8,1.1.1.1",
+        ] {
+            assert_eq!(resolve_tun_system_dns(Some(value)), "8.8.8.8");
+        }
+    }
 }
